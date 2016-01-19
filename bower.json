@@ -1,0 +1,22 @@
+{
+  "name": "google-maps",
+  "description": "Using Angular to display a google map with nearby attractions",
+  "main": "index.js",
+  "authors": [
+    "Martin Green <m.r.green@hotmail.co.uk>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8",
+    "angular-route": "~1.4.8"
+  }
+}

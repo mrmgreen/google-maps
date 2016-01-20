@@ -7,8 +7,8 @@
 		$scope.message = 'Good Evening this is a controller';
 		$scope.map = googleMap.map;
 		$scope.$on('usersCurrentCoords', function(event, args) {
-			console.log('coords received event', event);
-			console.log('coords received args', args);
+			console.log('coords received by controller event', event);
+			console.log('coords received by controller args', args);
 		});
 	}
 

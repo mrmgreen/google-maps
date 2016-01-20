@@ -3,16 +3,46 @@
 	angular.module('googleMaps')
 
 	.directive('maps', function() {
+		var coords;
+		function addGmapsScript(args) {
+			coords = args;
+			console.log('addGmapsScript args', coords);
+			var gmapsScript = document.createElement('script');
+			gmapsScript.src = "http://maps.googleapis.com/maps/api/js";
+			document.querySelector('head').appendChild(gmapsScript);
+			gmapsScript.addEventListener('load', initialize);
+		}
+
+		function initialize() {
+			console.log('initialize coords', coords);
+			var mapProp = {
+				center:new google.maps.LatLng(coords.lat, coords.long),
+				zoom:15,
+			    mapTypeId:google.maps.MapTypeId.ROADMAP
+			};
+			var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+		}
+
 		return {
-			template: '<p>Baked beans - this is a directive</p>'
+			link: function(scope, element, attributes) {
+				scope.$on('usersCurrentCoords', function(event, args) {
+				console.log('coords received by maps directive event', event);
+				addGmapsScript(args);
+				// initialize();
+				});
+			},
+			template: '<div id="googleMap" style="width:500px;height:380px;"></div>'
 		}
 	})
 
 	.directive('geoButton', function() {
+		var $scope;
 
-		function getLocation() {
+		function getLocation(scope) {
+			$scope = scope;
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(showPosition);
+				console.log('scope', $scope);
 			} else {
 				console.log("Geolocation is not supported by this browser.");
 			}
@@ -22,7 +52,6 @@
 			var coords = {};
 			coords.lat = position.coords.latitude;
 			coords.long = position.coords.longitude;
-			console.log('coords received', coords);
 			$scope.$emit('usersCurrentCoords', coords);
 		}
 
@@ -30,8 +59,7 @@
 			replace: true,
 			link: function( scope, element, attributes) {
 				element.bind('click', function() {
-					console.log("I've been clicked");
-					getLocation();
+					getLocation(scope);
 				});
 				element.css({
 					backgroundColor: 'blue',

@@ -10,19 +10,18 @@
 
 	.directive('geoButton', function() {
 
-
 		function getLocation() {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(showPosition);
 			} else {
-				x.innerHTML = "Geolocation is not supported by this browser.";
+				console.log("Geolocation is not supported by this browser.");
 			}
 		}
 
-
 		function showPosition(position) {
-			var x = "Latitude: " + position.coords.latitude +
-				"<br>Longitude: " + position.coords.longitude;
+			var x = {};
+			x.lat = position.coords.latitude;
+			x.long = position.coords.longitude;
 			console.log(x);
 		}
 

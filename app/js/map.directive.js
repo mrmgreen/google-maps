@@ -19,10 +19,11 @@
 		}
 
 		function showPosition(position) {
-			var x = {};
-			x.lat = position.coords.latitude;
-			x.long = position.coords.longitude;
-			console.log(x);
+			var coords = {};
+			coords.lat = position.coords.latitude;
+			coords.long = position.coords.longitude;
+			console.log('coords received', coords);
+			$scope.$emit('usersCurrentCoords', coords);
 		}
 
 		return {

@@ -15,12 +15,19 @@
 
 		function initialize() {
 			console.log('initialize coords', coords);
+			var myCenter=new google.maps.LatLng(coords.lat, coords.long);
 			var mapProp = {
-				center:new google.maps.LatLng(coords.lat, coords.long),
+				center:myCenter,
 				zoom:15,
 			    mapTypeId:google.maps.MapTypeId.ROADMAP
 			};
 			var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+			var marker=new google.maps.Marker({
+			  position:myCenter,
+			  });
+
+			marker.setMap(map);
 		}
 
 		return {
@@ -28,7 +35,6 @@
 				scope.$on('usersCurrentCoords', function(event, args) {
 				console.log('coords received by maps directive event', event);
 				addGmapsScript(args);
-				// initialize();
 				});
 			},
 			template: '<div id="googleMap" style="width:500px;height:380px;"></div>'

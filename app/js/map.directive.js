@@ -46,11 +46,22 @@
 			}
 
 			function createMarker(place) {
+
+				var image = {
+					url: place.icon,
+					// This marker is 20 pixels wide by 32 pixels high.
+					scaledSize: new google.maps.Size(20, 32),
+
+					origin: new google.maps.Point(0, 0),
+
+					anchor: new google.maps.Point(0, 0)
+				};
+
 				var placeLoc = place.geometry.location;
 				var marker = new google.maps.Marker({
 					map: map,
 					position: place.geometry.location,
-					icon: place.icon
+					icon: image
 				});
 
 				google.maps.event.addListener(marker, 'click', function() {

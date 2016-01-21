@@ -6,15 +6,14 @@
 		var coords;
 		function addGmapsScript(args) {
 			coords = args;
-			console.log('addGmapsScript args', coords);
 			var gmapsScript = document.createElement('script');
-			gmapsScript.src = "http://maps.googleapis.com/maps/api/js";
+			gmapsScript.src = "http://maps.googleapis.com/maps/api/js?libraries=places";
 			document.querySelector('head').appendChild(gmapsScript);
 			gmapsScript.addEventListener('load', initialize);
 		}
 
 		function initialize() {
-			console.log('initialize coords', coords);
+			var infowindow;
 			var myCenter=new google.maps.LatLng(coords.lat, coords.long);
 			var mapProp = {
 				center:myCenter,
@@ -28,6 +27,39 @@
 			  });
 
 			marker.setMap(map);
+
+			infowindow = new google.maps.InfoWindow();
+
+			var service = new google.maps.places.PlacesService(map);
+			service.nearbySearch({
+				location: myCenter,
+				radius: 500,
+				types: ['atm', 'subway_station', 'train_station']
+			}, callback);
+
+			function callback(results, status) {
+				if (status === google.maps.places.PlacesServiceStatus.OK) {
+					for (var i = 0; i < results.length; i++) {
+						createMarker(results[i]);
+					}
+				}
+			}
+
+			function createMarker(place) {
+				var placeLoc = place.geometry.location;
+				var marker = new google.maps.Marker({
+					map: map,
+					position: place.geometry.location,
+					icon: place.icon
+				});
+
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.setContent(place.name);
+					console.log('place', place);
+					infowindow.open(map, this);
+				});
+			}
+
 		}
 
 		return {
